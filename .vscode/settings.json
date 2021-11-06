@@ -1,0 +1,16 @@
+{
+  "rust.clippy_preference": "on",
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.alignEntries": true,
+  "rust.all_features": true,
+  "rust.all_targets": true,
+  "rust.full_docs": true,
+  "rust.rustflags": "--cfg docsrs",
+  "rust.rust-analyzer.releaseTag": "nightly",
+  "rust.unstable_features": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.wordWrapColumn": 120
+}

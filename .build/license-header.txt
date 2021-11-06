@@ -1,0 +1,2 @@
+// Copyright (c) 2021 Kim J. Nordmo and WormieCorp.
+// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project
