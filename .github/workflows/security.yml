@@ -5,6 +5,7 @@ on:
     paths:
       - "**/Cargo.toml"
       - "**/Cargo.lock"
+      - '.github/workflows/security.yml'
   schedule:
     - cron: "0 14 * * *" # 14:00 UTC
 jobs:
@@ -13,8 +14,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/audit-check@v1
-        # Don't run on dependabot PRs or forks
-        # https://github.com/actions-rs/clippy-check/issues/2#issuecomment-807852653
-        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
