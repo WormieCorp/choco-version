@@ -1,0 +1,103 @@
+name: Rust
+
+on:
+  push:
+  pull_request:
+    branches: [ master, develop ]
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        rust: [stable,beta,nightly,1.31.0]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        override: true
+
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release --all-features
+
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --all-features
+  bench:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+
+    - uses: actions-rs/install@v0.1
+      with:
+        crate: cargo-criterion
+
+    - uses: actions-rs/cargo@v1
+      with:
+        command: criterion
+        args: --all-features
+
+  coverage:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --all-features --no-fail-fast
+      env:
+        CARGO_INCREMENTAL: '0'
+        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+        RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+    - uses: actions-rs/grcov@v0.1
+      id: coverage
+      with:
+        config: grcov.yml
+
+    - uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ${{ steps.coverage.outputs.report }}
+        flag-name: run-${{ matrix.os }}
+        parallel: true
+    - uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ${{ steps.coverage.outputs.report }}
+        flags: run-${{ matrix.os }}
+        verbose: true
+
+  finish:
+    needs: coverage
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true

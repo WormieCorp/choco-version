@@ -40,7 +40,13 @@
 		"panicbit.cargo",
 		"editorconfig.editorconfig",
 		"mhutchie.git-graph",
-		"rust-lang.rust"
+		"rust-lang.rust",
+		"donjayamanne.githistory",
+		"hashhar.gitattributes",
+		"codezombiech.gitignore",
+		"eamodio.gitlens",
+		"knisterpeter.vscode-commitizen",
+		"github.vscode-pull-request-github"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
