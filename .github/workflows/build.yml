@@ -57,19 +57,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
       if: matrix.os != 'windows-latest'
       with:
-        toolchain: nightly
-        override: true
-    - uses: actions-rs/toolchain@v1
-      if: matrix.os == 'windows-latest'
-      with:
-        target: x86_64-pc-windows-gnu
         toolchain: nightly
         override: true
 
