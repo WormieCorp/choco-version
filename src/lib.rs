@@ -39,9 +39,9 @@ pub mod errors;
 pub mod version;
 
 pub mod prelude {
-    use crate::version;
-
     pub use std::str::FromStr;
 
     pub use version::ChocoVersion;
+
+    use crate::version;
 }
