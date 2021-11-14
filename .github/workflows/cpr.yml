@@ -11,4 +11,4 @@ jobs:
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
           close: false
-          commit_pattern: "([\w\-]+)(\([\w\-]+\))?!?: [\w\s:\-]+"
+          commit_pattern: "([\\w\\-]+)(\\([\\w\\-]+\\))?!?: [\\w\\s:\\-]+"
