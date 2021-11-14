@@ -1,6 +1,5 @@
 on:
-  pull_request: # Required to only listen to pull request events, else it will always fail
-    types: [opened, reopened, ready_for_review] # Recommended
+  pull_request:
 
 jobs:
   cpr:
